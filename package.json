@@ -1,6 +1,7 @@
 {
   "devDependencies": {
-    "json-server": "^0.17.0"
+    "json-server": "^0.17.0",
+    "yarn": "^1.22.18"
   },
   "scripts": {
     "case1db": "json-server --watch ./case1_todo_list/db.json",

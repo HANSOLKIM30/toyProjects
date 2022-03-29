@@ -39,7 +39,10 @@
         `
         return $todoItem;
     }
-
-    const init = () => {}
+    // js 실행 시 바로 실행되도록 함.
+    const init = () => {
+        const url = '';
+        fetch(url).then((response) => this = response.json())
+    }
     init();
 })();
