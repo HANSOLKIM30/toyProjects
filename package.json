@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "json-server": "^0.17.0"
+  },
+  "scripts": {
+    "case1db": "json-server --watch ./case1_todo_list/db.json",
+    "case2db": "json-server --watch ./case2_todo_list_pagination/db.json",
+    "case9db": "json-server --watch ./case9_todo_list_recommend/db.json"
+  }
+}
