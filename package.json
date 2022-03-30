@@ -1,4 +1,8 @@
 {
+  "name": "toy-projects",
+  "version": "1.0.0",
+  "discription": "토이프로젝트를 통한 js 학습",
+  "main": "index.js",
   "devDependencies": {
     "json-server": "^0.17.0"
   },
