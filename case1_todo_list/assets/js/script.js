@@ -111,21 +111,25 @@
             return;
         }
 
-        console.log("it Works!")
-
         const $item = event.target.closest('.item');
         const $label = $item.querySelector('label');
         const $editInput = $item.querySelector('input[type="text"]');
         const $contentButtons = $item.querySelector('.content-buttons');
         const $editButtons = $item.querySelector('.edit-buttons');
+        // 사용자가 수정 버튼을 클릭했을 때의 값 저장
+        const value = $editInput.value;
         
         if(event.target.className === 'todo-edit-button') {
             $label.style.display = 'none';
             $editInput.style.display = 'block';
             $contentButtons.style.display = 'none';
             $editButtons.style.display = 'block';
+            // 수정 input에 포커스 맞추기: 커서가 텍스트 앞쪽에 생기는 문제 발생
             $editInput.focus();
+            //edit value 초기화
             $editInput.value = '';
+            // 사용자가 수정 버튼을 클릭했을 때의 값으로 edit value 재입력
+            $editInput.value = value;
         }
         
         if(event.target.className === 'todo-edit-cancel-button') {
@@ -133,6 +137,10 @@
             $editInput.style.display = 'none';
             $contentButtons.style.display = 'block';
             $editButtons.style.display = 'none';
+            // edit input에 남아있는 입력값 없애기
+            $editInput.value = '';
+            // label 내부의 innerText는 수정 전의 값을 가지고 있음 ==> 해당 값 삽입하기
+            $editInput.value = $label.innerText;
         }
 
     }
@@ -157,6 +165,20 @@
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ content })
+        }).then(getTodos)   
+        .catch((error) => console.error(error));
+    }
+
+    const removeTodo = (event) => {
+        if(event.target.className !== 'todo-remove-button') {
+            return;
+        }
+
+        const $item = event.target.closest('.item');
+        const id = $item.dataset.id;
+
+        fetch(`${API_URL}/${id}`, {
+            method: "DELETE",
         }).then(getTodos)
         .catch((error) => console.error(error));
     }
@@ -169,6 +191,7 @@
         $todos.addEventListener('click', toggleTodo);
         $todos.addEventListener('click', changeEditMode);
         $todos.addEventListener('click', editTodo);
+        $todos.addEventListener('click', removeTodo);
     }
     init();
 })();
