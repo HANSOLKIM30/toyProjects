@@ -21,23 +21,23 @@
         $todoItem.dataset.id = id;
         $todoItem.innerHTML = `
         <div class="content">
-            <input type="checkbox" class='todo_checkbox' ${isChecked} />
+            <input type="checkbox" class='todo-checkbox' ${isChecked} />
             <label>${content}</label>
             <input type="text" value="${content}" />
         </div>
-        <div class="item_buttons content_buttons">
-            <button class="todo_edit_button">
+        <div class="item-buttons content-buttons">
+            <button class="todo-edit-button">
                 <i class="far fa-edit"></i>
             </button>
-            <button class="todo_remove_button">
+            <button class="todo-remove-button">
                 <i class="far fa-trash-alt"></i>
             </button>
         </div>
-        <div class="item_buttons edit_buttons">
-            <button class="todo_edit_confirm_button">
+        <div class="item-buttons edit-buttons">
+            <button class="todo-edit-confirm-button">
                 <i class="fas fa-check"></i>
             </button>
-            <button class="todo_edit_cancel_button">
+            <button class="todo-edit-cancel-button">
                 <i class="fas fa-times"></i>
             </button>
         </div>
@@ -74,13 +74,14 @@
         fetch(API_URL, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 content,
                 completed: false,
             })
         }).then(getTodos)
+        .then(() => { $todoInput.value=''; $todoInput.focus(); })
         .catch((error) => console.error(error));
     }
 
@@ -97,9 +98,65 @@
         fetch(`${API_URL}/${id}`, {
             method: 'PATCH',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({ completed })
+        }).then(getTodos)
+        .catch((error) => console.error(error));
+    }
+
+    const changeEditMode = (event) => {
+
+        if (event.target.className !== 'todo-edit-button' && event.target.className !== 'todo-edit-cancel-button') {
+            return;
+        }
+
+        console.log("it Works!")
+
+        const $item = event.target.closest('.item');
+        const $label = $item.querySelector('label');
+        const $editInput = $item.querySelector('input[type="text"]');
+        const $contentButtons = $item.querySelector('.content-buttons');
+        const $editButtons = $item.querySelector('.edit-buttons');
+        
+        if(event.target.className === 'todo-edit-button') {
+            $label.style.display = 'none';
+            $editInput.style.display = 'block';
+            $contentButtons.style.display = 'none';
+            $editButtons.style.display = 'block';
+            $editInput.focus();
+            $editInput.value = '';
+        }
+        
+        if(event.target.className === 'todo-edit-cancel-button') {
+            $label.style.display = 'block';
+            $editInput.style.display = 'none';
+            $contentButtons.style.display = 'block';
+            $editButtons.style.display = 'none';
+        }
+
+    }
+
+    const editTodo = (event) => {
+        if (event.target.className !== 'todo-edit-confirm-button') {
+            return;
+        }
+
+        const $item = event.target.closest('.item');
+        const id = $item.dataset.id;
+        const $editInput = $item.querySelector('input[type="text"]');
+        const content = $editInput.value;
+
+        if(content === '') {
+            return;
+        }
+
+        fetch(`${API_URL}/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ content })
         }).then(getTodos)
         .catch((error) => console.error(error));
     }
@@ -109,7 +166,9 @@
         // DOMContentLoaded(초기 html 문서를 완전히 불러오고 분석했을 때) 시, fetch 발생.
         window.addEventListener('DOMContentLoaded', getTodos);
         $form.addEventListener('submit', addTodo);
-        $todos.addEventListener('click', toggleTodo)
+        $todos.addEventListener('click', toggleTodo);
+        $todos.addEventListener('click', changeEditMode);
+        $todos.addEventListener('click', editTodo);
     }
     init();
 })();

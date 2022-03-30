@@ -110,11 +110,11 @@ h2 {
     width: 100%;
 }
 
-.item_buttons {
+.item-buttons {
     width: 118px;
 }
 
-.item_buttons>button {
+.item-buttons>button {
     width: 42px;
     height: 42px;
     color: #555555;
@@ -122,12 +122,12 @@ h2 {
     border-radius: 8px;
 }
 
-.item_buttons>button:first-child {
+.item-buttons>button:first-child {
     background-color: #bad4f5;
     margin-right: 8px;
 }
 
-.todo_checkbox {
+.todo-checkbox {
     appearance: auto !important;
 }
 
@@ -135,6 +135,6 @@ h2 {
     display: none;
 }
 
-.edit_buttons {
+.edit-buttons {
     display: none;
 }
