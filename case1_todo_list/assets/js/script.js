@@ -1,5 +1,5 @@
 // 즉시실행 함수
-;(function () {
+(function () {
     // 엄격한 모드
     'use strict'
 
