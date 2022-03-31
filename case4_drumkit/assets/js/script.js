@@ -1,6 +1,20 @@
 // 즉시실행 함수
 (function () {
     'use strict'
+    
+    const get = function(target) {
+        return document.querySelector(target);    
+    }
+
+    const getAll = function(target) {
+        return document.querySelectorAll(target);
+    }
+
+    const keys = Array.from(getAll('.keys'));
+
+    
+
+    const soundsRoot = 'assets/sounds';
 
     const drumSounds = [
         { key: 81, sound: 'clap.wav' },
@@ -13,6 +27,10 @@
         { key: 88, sound: 'snare.wav' },
         { key: 67, sound: 'tom.wav' },
     ]
+
+    const init = () => {};
+
+    init();
 })();
 
 
