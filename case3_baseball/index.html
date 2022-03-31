@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="kr">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,10 +7,19 @@
     <title>Baseball</title>
     <link rel="stylesheet" href="../utils/reset.css">
     <link rel="stylesheet" href="./assets/css/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
 </head>
 <body>
-    <!-- 4자리 수를 입력해서 정답으로 정해진 4자리 숫자와 매치하였을 때 자리 수도 같고 번호도 맞다면 strike, 자리수는 다르고 번호는 맞다면 ball -->
+    <!-- main, section등 검색에 최적화된 시멘틱 태그를 좀 더 많이 활용해보자! -->
+    <main>
+        <h1>Baseball</h1>
+        <section>
+            <div class="ball-answer">정답은?</div>
+            <form>
+                <label for="question"></label>
+                <input type="number" id="question" name="question" min="0" max="9999">
+            </form>
+        </section>
+    </main>
     <script src="./assets/js/script.js"></script>
 </body>
 </html>
