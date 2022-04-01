@@ -43,6 +43,11 @@ body {
      */
     border-radius: 0.5rem;
     box-sizing: content-box;
+    /*
+     * transition
+     * css 속성을 변경할 때 애니메이션 속도를 조절하는 방법을 제공.
+     * => 속성의 변경이 즉시 영향을 미치는 대신, 그 속성의 변화가 일정 기간에 걸쳐 일어나게 함. 
+     */
     transition: all 100ms;
 }
 
