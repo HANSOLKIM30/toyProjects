@@ -1,2 +1,90 @@
 @charset "utf-8";
 
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    height: 100vh;
+}
+
+main::before {
+    content: '';
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    /* 위치 / 사이즈 */
+    background: url(../images/bg.jpg) no-repeat 0 0 / cover;
+    opacity: 0.6;
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* 추후 section 내부의 요소에 absolute를 사용했을 때, main에 붙는 것을 방지 */
+    position: relative;
+    z-index: 1;
+    width: calc(100vw - 20px);
+    height: 100vh;
+}
+
+.ball-answer {
+    text-align: center;
+    width: 180px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    font-size: 18px;
+}
+
+.ball-question {
+    margin-top: 30px;
+    padding: 30px;
+    font-size: 20px;
+    background-color: #333;
+    text-align: center;
+    color: #fff;
+}
+
+.ball-question span {
+    display: block;
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+.ball-question span em {
+    /* em(강세요소)은 기본적으로 font-size가 italic => normal로 변경 */
+    font-size: normal;
+}
+
+form {
+    display: flex;
+    margin-top: 30px;
+
+}
+
+form .ball-input {
+    width: 100px;
+    height: 30px;
+    border: 1px solid #ccc;
+}
+
+form button {
+    background-color: #333;
+    border: none;
+    width: 70px;
+    height: 30px;
+    margin-left: 10px;
+    padding: 0 10px;
+    color: #fff;
+    cursor: pointer;
+}
+
+form button:hover, form button:active, form button:focus {
+    opacity: 0.8;
+}
