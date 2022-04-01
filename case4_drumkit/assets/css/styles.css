@@ -47,6 +47,7 @@ body {
 }
 
 .playing {
+    /* scale - X, Y 1.1배씩 확대 */
     transform: scale(1.1);
     background-color: rgb(0 0 0 / 60%);
 }
