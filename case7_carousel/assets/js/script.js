@@ -15,13 +15,25 @@
 
             this.totalItems = this.items.length; // 5개
             this.current = 0; // 첫 item의 index
+
+            // 캐러셀이 동작하는 동안에는 클릭이벤트를 발생하지 않게 하는 변수
+            this.isMoving = false;
         }
 
         // 캐러셀 초기화 메서드
         initCarousel() {
+            this.isMoving = false;
             this.items[0].classList.add('active');
             this.items[this.totalItems-1].classList.add('prev');
             this.items[1].classList.add('next');
+        }
+
+        disableInteraction() {
+            this.isMoving = true;
+            // css에서 설정한 transition시간(0.5s)만큼 이벤트 지연
+            setTimeout(() => {
+                this.isMoving = false;
+            }, 500)
         }
 
         // prevButton과 nextButton을 통한 클릭이벤트를 받는 메서드
@@ -35,11 +47,11 @@
             this.nextButton.addEventListener('click', () => {
                 this.moveNext();
             });
-
-            
         }
 
         moveCarouselTo() {
+            // this.isMoving => true로 만들어주기
+            this.disableInteraction();
             // current를 기준으로 prev와 next 정해주기
             let prev = this.current - 1;
             let next = this.current + 1;
@@ -65,6 +77,9 @@
         }
 
         movePrev() {
+            if(this.isMoving) {
+                return;
+            }
             if(this.current === 0) {
                 this.current = this.totalItems - 1;
             } else {
@@ -74,6 +89,9 @@
         }
 
         moveNext() {
+            if(this.isMoving) {
+                return;
+            }
             if(this.current === this.totalItems - 1) {
                 this.current = 0;
             } else {
