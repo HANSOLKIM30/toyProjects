@@ -52,10 +52,12 @@
                 </figure>
                 <figure>
                     <a href="#none" class="btn-view">
+                        <!-- <picture> 태그는 <img> 요소의 다중 이미지 리소스(multiple image resources)를 위한 컨테이너를 정의할 때 사용  -->
                         <picture>
                             <source srcset="./assets/images/sample.jpg" type="image/webp" />
                             <source srcset="./assets/images/sample.jpg" type="image/jpg" />
-                            <!-- picture 태그가 지원되지 않는 브라우저를 위한 조치 --> 
+                            <!-- <img> 요소는 <picture> 요소를 지원하지 않는 브라우저를 위한 하위 호환성을 위해 사용되거나 명시된 <source> 요소가 모두 조건을 만족하지 못 할 경우 사용 -->
+                            <!-- <img> 요소는 <picture> 요소의 자식 요소 중에서 가장 마지막에 위치! -->
                             <img srcset="./assets/images/sample.jpg" alt="sample" />
                         </picture>
                     </a>
@@ -159,7 +161,7 @@
             <div class="contents view">
               <figure>
                 <video autoplay>
-                  <source src="./assets/images/sample.mp4" type="vedio/mp4" />
+                  <source src="./assets/images/sample.mp4" type="video/mp4" />
                 </video>
                 <figcaption>
                   <span class="description">

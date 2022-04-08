@@ -51,15 +51,17 @@ section {
     background-color: #121212;
     /* caret-color 커서 색깔을 바꿈 */
     caret-color: #fff;
+    font-size: 16px;
+    color: #fff;
 }
 
 .search-bar input::placeholder {
-    color: #fff;
+    color: #888;
 }
 
 /* 지원하는 범위에 맞춰 개별 설정(구글, 사파리) */
 .search-bar input::-webkit-placeholder {
-    color: #fff;
+    color: #888;
 }
 
 .search_bar input::-ms-input-placeholder {
@@ -108,6 +110,7 @@ section {
 }
 
 .contents {
+    display: none;
     justify-content: flex-start;
     /*felx-item 요소들(여기서는 figure)이 가능한 영역 내에서 벗어나지 않게한다. */
     flex-wrap: wrap;
@@ -207,7 +210,9 @@ section {
     transition: color 0.3s;
 }
 
-.contents figcaption .description:hover {
+.contents figcaption .description:hover,
+.contents figcaption .description:active,
+.contents figcaption .description:focus {
     color: #fff;
 }
 
