@@ -28,7 +28,7 @@ section {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 90vh;
+    width: 90vw;
     height: calc(100vh - 150px);
     border: 1px solid #dedede;
     padding: 30px;
@@ -62,7 +62,12 @@ section {
     color: #fff;
 }
 
-.search-bar input:focus{
+.search_bar input::-ms-input-placeholder {
+    color: #888;
+  }
+
+  
+.search-bar input:focus {
     border-color: #2f62b3;
     /* 동일한 효과처럼 보이지만, 
      * border는 옵션의 두께만큼 박스의 전체 크기도 늘어나게 하는 반면,
@@ -77,7 +82,7 @@ section {
     height: 100%;
 }
 
-.search-bar label .btn-search{
+.search-bar label .btn-search {
     display: block;
     width: 100%;
     height: 100%;
@@ -95,18 +100,20 @@ section {
     /* viewport 설정 */
     width: 100%;
     height: 100%;
+    pointer-events: none;
 }
 
-.search-bar label .btn-search svg path{
+.search-bar label .btn-search svg path {
     fill: #fff;
 }
 
 .contents {
     justify-content: flex-start;
-    /* flex-wrap: wrap; */
+    /*felx-item 요소들(여기서는 figure)이 가능한 영역 내에서 벗어나지 않게한다. */
+    flex-wrap: wrap;
     width: 100%;
     height: 100%;
-    margin-top: 20%;
+    margin-top: 20px;
     padding: 3%;
     background-color: #181818;
     border: 1px solid #383838;
@@ -116,3 +123,198 @@ section {
 .contents.list {
     display: flex;
 }
+
+.contents.view figure {
+    flex: 0 0 50%;
+    margin: 0;
+}
+
+.contents.view figure video {
+    width: 100%;
+}
+
+.contents figure {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    /* flex-grow flex-shrink flex-basis */
+    /* flex-grow, flex-shrink:0 ==> flex container의 크기가 커지거나 작아져도 flex item의 원래 크기 유지 */
+    flex: 0 0 23%;
+    margin: 1%;
+}
+
+.contents figure .btn-view {
+    flex: none;
+    width: 100%;
+    position: relative;
+}
+
+.contents figure .btn-view.focus-visible {
+    /* filter: 흐림(blur)나 색상 변형 등 그래픽 효과를 요소에 적용 */
+    /* https://developer.mozilla.org/ko/docs/Web/CSS/filter */
+    filter: brightness(1.2);
+}
+
+/* a가 inline이니까 자체를 block화 시키는 것 보다, before를 통해 block을 잡아줘서 위치 지정 */
+.contents figure .btn-view::before {
+    content: '';
+    display: block;
+    width: 100%;
+    padding-top: 56.25%;
+}
+
+.contents figure picture {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+    transition: filter 0.3s;
+}
+
+.contents figure picture:hover {
+    filter: brightness(1.2);
+}
+
+.contents figcaption {
+    display: flex;
+    align-items: flex-start;
+    padding: 12px 5px 40px;
+    cursor: pointer;
+}
+
+.contents figcaption i {
+    flex-shrink: 0;
+    display: block;
+    width: 36px;
+    height: 36px;
+    margin-right: 12px;
+    border-radius: 50%;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+.contents figcaption .description {
+    display: block;
+    width: 100%;
+    font-size: 12px;
+    color: #aaa;
+    transition: color 0.3s;
+}
+
+.contents figcaption .description:hover {
+    color: #fff;
+}
+
+.contents figcaption .description strong {
+    width: 100%;
+    margin-bottom: 4px;
+    /* webkit 계열에서는 webkit box를 통해서 ellispse 처리 가능 */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    /* 
+     * webkit-line-clamp
+     * display 속성 ==> -webkit-box 또는 -webkit-inline-box
+     * -webkit-box-orient 속성을 vertical로 설정한 경우에만 동작 
+     */
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.5;
+    color: #fff;
+    font-weight: 400;
+}
+
+.contents figcaption .description em {
+    display: block;
+    font-style: normal;
+    line-height: 2;
+}
+
+.contents figcaption .description .stream {
+    display: block;
+    width: 65px;
+    margin-top: 8px;
+    padding: 3px;
+    border-radius: 2px;
+    border: 1px solid #ff4e45;
+    color: #ff4e45;
+    text-align: center;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+}
+
+.controls button {
+    background-color: #2f62b3;
+    border: 0;
+    color: #fff;
+    margin: 0 5px;
+    padding: 8px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.controls button:hover {
+    background-color: #2d6bcd;
+  }
+
+.controls .js-progress {
+    width: 100%;
+    border-radius: 0;
+}
+
+.controls .js-progress::-webkit-progress-bar {
+    background-color: #fff;
+}
+  
+  .controls .js-progress::-webkit-progress-value {
+    background: #2d6bcd;
+}
+  
+  .controls .js-volume::-webkit-slider-runnable-track {
+    background-color: #fff;
+}
+  
+  .controls .js-volume::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background-color: #2d6bcd;
+    width: 15px;
+    height: 15px;
+}
+
+/* 미디어유형: all */
+/* prefers-reduced-motion: device에서 transition이나 animation을 제거 */
+@media (max-width: 1024px) {
+    .contents figure {
+        /* margin 1% 제외한 flex-basis(3개짜리) */
+        flex: 0 0  31.333%;
+    }
+
+    .contents.view figure {
+        flex: 0 0 100%;
+      }
+}
+
+@media (max-width: 767px) {
+    .contents figure {
+        /* margin 1% 제외한 flex-basis(2개짜리) */
+        flex: 0 0  48%;
+    }
+}
+
+@media (max-width: 480px) {
+    .contents figure {
+        /* margin 1% 제외한 flex-basis(1개짜리) */
+        flex: 0 0  100%;
+        margin: 0;
+    }
+}
+
