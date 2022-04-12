@@ -160,7 +160,7 @@
             </div>
             <div class="contents view">
               <figure>
-                <video autoplay>
+                <video autoplay muted>
                   <source src="./assets/images/sample.mp4" type="video/mp4" />
                 </video>
                 <figcaption>
@@ -177,7 +177,7 @@
                    value="0"
                    class="js-progress">
                   </progress>
-                  <button type="button" class="js-reply">Replay</button>
+                  <button type="button" class="js-replay hidden">Replay</button>
                   <button type="button" class="js-play">Play</button>
                   <button type="button" class="js-stop">Stop</button>
                   <input 
@@ -185,10 +185,10 @@
                     min="0"
                     max="1"
                     step="0.1"
-                    value="1"
+                    value="0"
                     class="js-volume"
                     />
-                    <button type="button" class="js-mute">Mute</button>
+                    <button type="button" class="js-mute"></button>
                     <button type="button" class="js-fullScreen" accesskey="T">FullScreen</button>
                 </span>
               </figure>

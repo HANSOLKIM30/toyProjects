@@ -295,6 +295,10 @@ section {
     height: 15px;
 }
 
+.hidden {
+    display: none;
+}
+
 /* 미디어유형: all */
 /* prefers-reduced-motion: device에서 transition이나 animation을 제거 */
 @media (max-width: 1024px) {

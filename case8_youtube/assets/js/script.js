@@ -46,7 +46,9 @@
             } else {
                 getListPage();
             }
-        })
+        });
+
+        viewPageEvent();
     }
 
     const search  = () => {
@@ -100,6 +102,130 @@
     const getListPage = () => {
         get('.list').style.display = 'flex';
         get('.view').style.display = 'none';
+    }
+    
+    const buttonChange = (btn, value) => {
+        btn.innerHTML = value;
+    }
+
+    const viewPageEvent = () => {
+        // 초기값 설정
+        mute();
+        playVideo();
+
+        // EventListener 등록
+        $volume.addEventListener('change', (e) => {
+            $player.volume = e.target.value;
+            $player.volume === 0
+                ? $player.muted = true
+                : $player.muted = false;
+        });
+        // timeupdate Event: currentTime 속성으로 나타나는 시간이 업데이트 되었을 때
+        $player.addEventListener('timeupdate', setProgress);
+        $player.addEventListener('volumechange', () => {
+            
+        });
+        // ended: 미디어의 끝에 도달해 재생이 멈추었을 때.
+        $player.addEventListener('ended', () => {
+            $btnPlay.classList.toggle('hidden');
+            $btnReplay.classList.toggle('hidden');
+        });
+        $progress.addEventListener('click', getCurrent);
+        $btnPlay.addEventListener('click', playVideo);
+        $btnStop.addEventListener('click', stopVideo);
+        $btnReplay.addEventListener('click', replayVideo);
+        $btnMute.addEventListener('click', toggleMute);
+        $fullScreen.addEventListener('click', fullScreen);
+    }
+
+    const getCurrent = (e) => {
+        // $progress에서 클릭한 위치의 좌표 구하기 ==> 진행도
+        let percent  = e.offsetX / $progress.offsetWidth;
+        // 현재시간 = 진행도 * 비디오의 전체 길이
+        // currentTime이 변했으므로 ==>  setProgress 실행됨
+        $player.currentTime = percent * $player.duration;
+    }
+
+    const setProgress = () => {
+        //현재 재생위치 / 비디오 재생시간 * 100 ==> 비디오 진행도(%)
+        let percentage = Math.floor($player.currentTime / $player.duration * 100);
+        $progress.value = percentage;
+    }
+
+    const playVideo = () => {
+        if($player.paused) {
+            buttonChange($btnPlay, 'Pause');
+            $player.play();
+        } else {
+            buttonChange($btnPlay, 'Play');
+            $player.pause();
+        }
+    }
+
+    const stopVideo = () => {
+        $player.pause();
+        $player.currentTime = 0;
+        buttonChange($btnPlay, 'Play');
+    }
+
+    const resetPlayer = () => {
+        $btnPlay.classList.toggle('hidden');
+        $btnReplay.classList.toggle('hidden');
+        $progress.value = 0;
+        $player.currentTime = 0;
+    }
+
+    const replayVideo = () => {
+        resetPlayer();
+        playVideo();
+    }
+
+    const toggleMute = () => {
+        $player.muted = !$player.muted;
+        mute();
+    }
+
+    const mute = () => {
+        if($player.muted) {
+            $volume.value = 0;
+            buttonChange($btnMute, 'Unmute');
+        } else {
+            $volume.value = $player.volume;
+            buttonChange($btnMute, 'Mute');
+        }
+    }
+
+    const fullScreen = () => {
+        if($player.requestFullscreen) {
+            if(document.fullscreenElement) {
+                document.cancelFullScreen();
+            } else {
+                $player.requestFullscreen();
+            }
+        } else if($player.msRequestFullscreen) {
+            // 구형 브라우저
+            if(document.msFullscreenElement) {
+                document.msExitFullScreen();
+            } else {
+                $player.msRequestFullscreen();
+            }
+        } else if($player.mozRequestFullScreen) {
+            // moz 계열 
+            if(document.mozFullScreenElement) {
+                document.mozCancelFullScreen();
+            } else {
+                $player.mozRequestFullScreen();
+            }
+        } else if($player.webkitRequestFullScreen) {
+            // webkit 계열
+            if(document.webkitFullScreenElement) {
+                document.webkitCancelFullScreen();
+            } else {
+                $player.webkitRequestFullscreen();
+            }
+        } else {
+            alert('Not Supported');
+        }
     }
 
     init();
