@@ -2,7 +2,7 @@
     'use strict'
   
     const get = (target) => {
-      return document.querySelector(target)
+      return document.querySelector(target);
     }
   
     const $todos = get('.todos');
@@ -76,11 +76,11 @@
     }
   
     const createTodoElement = (item) => {
-      const { id, content, completed } = item
-      const isChecked = completed ? 'checked' : ''
-      const $todoItem = document.createElement('div')
-      $todoItem.classList.add('item')
-      $todoItem.dataset.id = id
+      const { id, content, completed } = item;
+      const isChecked = completed ? 'checked' : '';
+      const $todoItem = document.createElement('div');
+      $todoItem.classList.add('item');
+      $todoItem.dataset.id = id;
       $todoItem.innerHTML = `
       <div class="content">
         <input type="checkbox" class='todo-checkbox' ${isChecked} />
@@ -103,15 +103,15 @@
             <i class="fas fa-times"></i>
         </button>
      </div>
-    `
-      return $todoItem
+    `;
+      return $todoItem;
     }
   
     const renderAllTodos = (todos) => {
-      $todos.innerHTML = ''
+      $todos.innerHTML = '';
       todos.forEach((item) => {
-        const todoElement = createTodoElement(item)
-        $todos.appendChild(todoElement)
+        const todoElement = createTodoElement(item);
+        $todos.appendChild(todoElement);
       })
     }
   
@@ -126,8 +126,8 @@
   
     const addTodo = (e) => {
       e.preventDefault()
-      const content = $todoInput.value
-      if (!content) return
+      const content = $todoInput.value;
+      if (!content) return;
       const todo = {
         content,
         completed: false,
@@ -141,16 +141,16 @@
         .then(getTodos)
         .then(() => {
           $todoInput.value = ''
-          $todoInput.focus()
+          $todoInput.focus();
         })
-        .catch((error) => console.error(error.message))
+        .catch((error) => console.error(error.message));
     }
   
     const toggleTodo = (e) => {
-      if (e.target.className !== 'todo_checkbox') return
-      const $item = e.target.closest('.item')
-      const id = $item.dataset.id
-      const completed = e.target.checked
+      if (e.target.className !== 'todo-checkbox') return;
+      const $item = e.target.closest('.item');
+      const id = $item.dataset.id;
+      const completed = e.target.checked;
       fetch(`${API_URL}/${id}`, {
         method: 'PATCH',
         headers: { 'Content-type': 'application/json' },
@@ -158,42 +158,42 @@
       })
         .then((response) => response.json())
         .then(getTodos)
-        .catch((error) => console.error(error.message))
+        .catch((error) => console.error(error.message));
     }
   
     const changeEditMode = (e) => {
-      const $item = e.target.closest('.item')
-      const $label = $item.querySelector('label')
-      const $editInput = $item.querySelector('input[type="text"]')
-      const $contentButtons = $item.querySelector('.content_buttons')
-      const $editButtons = $item.querySelector('.edit_buttons')
-      const value = $editInput.value
+      const $item = e.target.closest('.item');
+      const $label = $item.querySelector('label');
+      const $editInput = $item.querySelector('input[type="text"]');
+      const $contentButtons = $item.querySelector('.content-buttons');
+      const $editButtons = $item.querySelector('.edit-buttons');
+      const value = $editInput.value;
   
-      if (e.target.className === 'todo_edit_button') {
-        $label.style.display = 'none'
-        $editInput.style.display = 'block'
-        $contentButtons.style.display = 'none'
-        $editButtons.style.display = 'block'
-        $editInput.focus()
-        $editInput.value = ''
-        $editInput.value = value
+      if (e.target.className === 'todo-edit-button') {
+        $label.style.display = 'none';
+        $editInput.style.display = 'block';
+        $contentButtons.style.display = 'none';
+        $editButtons.style.display = 'block';
+        $editInput.focus();
+        $editInput.value = '';
+        $editInput.value = value;
       }
   
-      if (e.target.className === 'todo_edit_cancel_button') {
-        $label.style.display = 'block'
-        $editInput.style.display = 'none'
-        $contentButtons.style.display = 'block'
-        $editButtons.style.display = 'none'
-        $editInput.value = $label.innerText
+      if (e.target.className === 'todo-edit-cancel-button') {
+        $label.style.display = 'block';
+        $editInput.style.display = 'none';
+        $contentButtons.style.display = 'block';
+        $editButtons.style.display = 'none';
+        $editInput.value = $label.innerText;
       }
     }
   
     const editTodo = (e) => {
-      if (e.target.className !== 'todo_edit_confirm_button') return
-      const $item = e.target.closest('.item')
-      const id = $item.dataset.id
-      const $editInput = $item.querySelector('input[type="text"]')
-      const content = $editInput.value
+      if (e.target.className !== 'todo-edit-confirm-button') return;
+      const $item = e.target.closest('.item');
+      const id = $item.dataset.id;
+      const $editInput = $item.querySelector('input[type="text"]');
+      const content = $editInput.value;
   
       fetch(`${API_URL}/${id}`, {
         method: 'PATCH',
@@ -202,20 +202,20 @@
       })
         .then((response) => response.json())
         .then(getTodos)
-        .catch((error) => console.error(error.message))
+        .catch((error) => console.error(error.message));
     }
   
     const removeTodo = (e) => {
-      if (e.target.className !== 'todo_remove_button') return
-      const $item = e.target.closest('.item')
-      const id = $item.dataset.id
+      if (e.target.className !== 'todo-remove-button') return;
+      const $item = e.target.closest('.item');
+      const id = $item.dataset.id;
   
       fetch(`${API_URL}/${id}`, {
         method: 'DELETE',
       })
         .then((response) => response.json())
         .then(getTodos)
-        .catch((error) => console.error(error.message))
+        .catch((error) => console.error(error.message));
     }
   
     const init = () => {
@@ -225,13 +225,13 @@
         pagination();
       })
   
-      $form.addEventListener('submit', addTodo)
-      $todos.addEventListener('click', toggleTodo)
-      $todos.addEventListener('click', changeEditMode)
-      $todos.addEventListener('click', editTodo)
-      $todos.addEventListener('click', removeTodo)
+      $form.addEventListener('submit', addTodo);
+      $todos.addEventListener('click', toggleTodo);
+      $todos.addEventListener('click', changeEditMode);
+      $todos.addEventListener('click', editTodo);
+      $todos.addEventListener('click', removeTodo);
     }
   
-    init()
+    init();
   })();
   

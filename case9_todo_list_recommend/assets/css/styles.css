@@ -86,6 +86,8 @@ h2 {
 
 .content {
   width: 100%;
+  /* 최대 길이: 버튼 영역 확보 */
+  max-width: calc(100% - 135px);
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -101,6 +103,11 @@ h2 {
   margin-left: 20px;
   padding-top: 4px;
   width: 100%;
+
+  /* ellipsis 처리 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
 }
 
 .content>input[type='text'] {
@@ -112,7 +119,7 @@ h2 {
 }
 
 .item-buttons {
-  width: 118px;
+  flex-shrink: 0;
 }
 
 .item-buttons>button {
@@ -123,9 +130,23 @@ h2 {
   border-radius: 8px;
 }
 
-.item-buttons>button:first-child {
+.item-buttons>button.todo-edit-button {
   background-color: #bad4f5;
-  margin-right: 8px;
+}
+
+.item-buttons>button.todo-recommend-button .fas {
+  display: none;
+}
+
+.item-buttons>button.todo-recommend-button.active {
+  background-color: #f1df40;
+}
+
+.item-buttons>button.todo-recommend-button.active .far {
+  display: none;
+}
+.item-buttons>button.todo-recommend-button.active .fas {
+  display: block;
 }
 
 .todo-checkbox {

@@ -41,7 +41,7 @@
                 <i class="fas fa-times"></i>
             </button>
         </div>
-        `
+        `;
         return $todoItem;
     }
 
@@ -86,7 +86,7 @@
     }
 
     const toggleTodo = (event) => {
-        if(event.target.className !== 'todo_checkbox') {
+        if(event.target.className !== 'todo-checkbox') {
             return;
         };
 
