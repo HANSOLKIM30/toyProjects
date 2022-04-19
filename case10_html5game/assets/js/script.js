@@ -19,7 +19,7 @@
 
     const colorSet = {
         board: 'rgb(20, 105, 38)',
-        snakeSensor: 'rgba(0, 0, 0, 0)',
+        snakeSensor: 'rgba(0, 0, 0, 0)', // sensor ==> 투명하게 처리
         snakeHead: 'rgba(229, 65, 120, 0.929)',
         snakeBody: 'rgba(153, 206, 244, 0.798)',
         food: 'rgb(66, 187, 103)'
@@ -109,13 +109,13 @@
 
     // buildSnack: 하나의 크기가 10px인 snake의 구성요소를 만듦 
     const buildSnack = (ctx, x, y, index) => {
-        // head와 body의 색깔 다르게 지정
-        if(index === 0) {
+        // sensor, head, body의 색깔 다르게 지정
+        if(index === 0) {   // sensor
             ctx.fillStyle = colorSet.snakeSensor;
         } else 
-        if(index === 1) {
+        if(index === 1) {   // head
             ctx.fillStyle = colorSet.snakeHead;
-        } else {
+        } else {    // body
             ctx.fillStyle = colorSet.snakeBody;
         }
         ctx.fillRect(x, y, 10, 10);
@@ -275,10 +275,9 @@
     }
 
     const isSmashedBody = () => {
-        const head = option.snake[1];
-        console.log(head)
+        const sensor = option.snake[0];
         return option.snake.some((body, index) => {
-            return index !== 1 && head.x === body.x && head.y === body.y;
+            return index !== 0 && sensor.x === body.x && sensor.y === body.y;
         });
     }
 
@@ -310,8 +309,8 @@
             }
             playSnake();    
             buildBoard();
-            setSnake();
             buildFood(ctx, option.food.x, option.food.y);
+            setSnake();
             getFood();
             start = timestamp;            
         }
