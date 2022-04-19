@@ -42,7 +42,6 @@ main {
   button {
       display: block;
       border: 0;
-      width: 100px;
       padding: 20px;
       font-size: 20px;
       cursor: pointer;
