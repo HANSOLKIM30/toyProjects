@@ -19,6 +19,7 @@
 
     const colorSet = {
         board: 'rgb(20, 105, 38)',
+        snakeSensor: 'rgba(0, 0, 0, 0)',
         snakeHead: 'rgba(229, 65, 120, 0.929)',
         snakeBody: 'rgba(153, 206, 244, 0.798)',
         food: 'rgb(66, 187, 103)'
@@ -31,9 +32,10 @@
         gameEnd: true,
         direction: 2,
         snake : [
-           {x: 10, y: 10, direction: 2}, 
-           {x: 10, y: 20, direction: 2}, 
-           {x: 10, y: 30, direction: 2}, 
+            {x: 10, y: 10, direction: 2},
+            {x: 10, y: 20, direction: 2}, 
+            {x: 10, y: 30, direction: 2}, 
+            {x: 10, y: 40, direction: 2}, 
         ],
         food: {x: 0, y: 0},
         score: 0,
@@ -77,9 +79,10 @@
                         gameEnd: false, // gameEnd = false로 변경
                         direction: 2,
                         snake : [
-                            {x: 10, y: 10, direction: 2}, 
+                            {x: 10, y: 10, direction: 2},
                             {x: 10, y: 20, direction: 2}, 
                             {x: 10, y: 30, direction: 2}, 
+                            {x: 10, y: 40, direction: 2}, 
                         ],
                         food: {x: 0, y: 0},
                         score: 0,
@@ -108,6 +111,9 @@
     const buildSnack = (ctx, x, y, index) => {
         // head와 body의 색깔 다르게 지정
         if(index === 0) {
+            ctx.fillStyle = colorSet.snakeSensor;
+        } else 
+        if(index === 1) {
             ctx.fillStyle = colorSet.snakeHead;
         } else {
             ctx.fillStyle = colorSet.snakeBody;
@@ -205,8 +211,8 @@
     }
 
     const getFood = () => {
-        const snakeX = option.snake[0].x;
-        const snakeY = option.snake[0].y;
+        const snakeX = option.snake[1].x;
+        const snakeY = option.snake[1].y;
         const foodX = option.food.x;
         const foodY = option.food.y;
 
@@ -269,15 +275,16 @@
     }
 
     const isSmashedBody = () => {
-        // head가 지렁이의 몸에 부딫히면 gameOver
-        const head = option.snake[0];
+        const head = option.snake[1];
+        console.log(head)
         return option.snake.some((body, index) => {
-            return index !== 0 && head.x === body.x && head.y === body.y;
-        })
+            return index !== 1 && head.x === body.x && head.y === body.y;
+        });
     }
 
     const isSmashedWall = () => {
-
+        const sensor = option.snake[0];
+        return sensor.x === -10 || sensor.x === 300 || sensor.y === -10 || sensor.y === 300; 
     }
 
     // timestamp: 대기된 콜백을 실행하는 시점을 나타내는 단일 인자
@@ -293,14 +300,14 @@
         // timestamp ==> JS가 최초로 로드된 후 해당 메서드를 불러오는데 걸린 시간
         // 1000 / 10 ==> duration
         if(timestamp - start > 1000 / 10 && !!option.gamePaused) {
-            // if(isGameOver()) {
-            //     $play.innerHTML = 'REPLAY';
-            //     option.gamePaused = false;
-            //     option.gameEnd = true;
-            //     setHighScore();
-            //     alert('게임오버');
-            //     return;
-            // }
+            if(isSmashedBody() ||  isSmashedWall()) {
+                $play.innerHTML = 'REPLAY';
+                option.gamePaused = false;
+                option.gameEnd = true;
+                setHighScore();
+                alert('게임오버');
+                return;
+            }
             playSnake();    
             buildBoard();
             setSnake();
