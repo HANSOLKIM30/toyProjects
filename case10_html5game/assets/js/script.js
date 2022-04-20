@@ -63,10 +63,6 @@
             option.direction = direction;
         });
 
-        $canvas.onclick = () => {
-            console.log("click")
-        }
-
         $play.onclick = () => {
             if(!option.gamePaused) {
                 // 게임 실행
