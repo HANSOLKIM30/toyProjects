@@ -297,7 +297,7 @@
         }
         
         // timestamp ==> JS가 최초로 로드된 후 해당 메서드를 불러오는데 걸린 시간
-        // 1000 / 10 ==> duration
+        // 1000 / 10 ==> 움직이는 시간 조절 가능 ==> 커질 수록 더 많은 시간이 지나야 하므로 느려짐.
         if(timestamp - start > 1000 / 10 && !!option.gamePaused) {
             if(isSmashedBody() ||  isSmashedWall()) {
                 $play.innerHTML = 'REPLAY';
