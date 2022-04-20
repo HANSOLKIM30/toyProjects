@@ -1,0 +1,42 @@
+@charset "utf-8";
+
+.blind {
+    text-indent: -9999px;
+    overflow: hidden;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+    padding: 30px;
+    /* user-select: 브라우저에서 드래그나 더블 클릭을 사용한 텍스트 선택 등을 막을 수 있다. */
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+  }
+  
+  h1 {
+    margin-bottom: 20px;
+    font-size: 30px;
+    font-weight: 500;
+    text-align: center;
+    text-transform: uppercase;
+    width: 648px;
+  }
+
+  .canvas {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      width: 648px;
+      height: 420px;
+      border: 2px solid #000;
+      background-color: #ccc;
+  }
