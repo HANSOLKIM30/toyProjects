@@ -32,10 +32,11 @@
 
             // ball
             this.radius = 10;
+            // ballX, ballY: center of the circle
             this.ballX = this.canvas.width / 2;
             this.ballY = this.canvas.height - 30;
             this.directionX = data.speed;
-            this.directionY = data.speed;
+            this.directionY = -data.speed;
 
             // paddle
             this.paddleWidth = data.paddleWidth;
@@ -85,6 +86,50 @@
 
         }
 
+        drawBall = () => {
+            // draw circle
+            this.ctx.beginPath();
+            // arc(x, y, raius, startAngle, endAngle)
+            this.ctx.arc(this.ballX, this.ballY, this.radius, 0, Math.PI * 2);
+            this.ctx.fillStyle = this.ballColor;
+            this.ctx.fill();
+            this.ctx.closePath();
+        }
+
+        // draw paddle on the floor of the canvas
+        drawPaddle = () => {
+            this.ctx.beginPath();
+            // rect(x, y, width, height)
+            this.ctx.rect(this.paddleX, this.canvas.height - this.paddleHeight, this.paddleWidth, this.paddleHeight);
+            this.ctx.fillStyle = this.paddleColor;
+            this.ctx.fill();
+            this.ctx.closePath();
+        }
+
+        drawBricks = () => {
+            this.bricks
+            // initiate coordinate of a brick
+            let brickX = 0;
+            let brickY = 0;
+        }
+
+        drawScore = () => {
+            this.ctx.font = this.fontFamily;
+            this.ctx.fillStyle = '#fff';
+            // fillText(text, x, y, [maxWidth])
+            this.ctx.fillText(`점수: ${this.socre}`, 10, 22);
+        }
+
+        drawLives = () => {
+            // this.ctx.font = this.fontFamily;
+            this.ctx.fillStyle = '#fff';
+            this.ctx.fillText( `남은 횟수: ${this.lives} `, this.canvas.width - 117, 22)
+        }
+
+        detectCollision = () => {
+
+        }
+
         // draw elements on canvas
         draw = () => {
             // clear canvas content
@@ -100,36 +145,35 @@
             );
 
             // darw the ball
-            // this.drawBall();
+            this.drawBall();
 
             // draw the paddle
-            //this.drawPaddle();
+            this.drawPaddle();
 
             // draw bricks
-            //this.drawBricks();
+            this.drawBricks();
 
             // draw the score
-            //this.drawScore();
+            this.drawScore();
             
             // draw the lives - chances to play
-            //this.drawLives();
+            this.drawLives();
             
             // collision detection between bricks and the ball
-            //this.detectCollision();
+            this.detectCollision();
 
-            // move the ball
-            this.ballX += this.directionX;
+            // move the ball: move to (x+2, y+2) ==> draw diagonal line
+            this.ballX += this.directionX;  
             this.ballY += this.directionY;
 
             // gameover 될 때까지 재귀적으로 계속 호출되어야 한다.
             requestAnimationFrame(this.draw);
-    
         }
 
-        // reset = () => {
-        //     // reloads the current URL
-        //     document.location.reload();
-        // }
+        reset = () => {
+            // reloads the current URL
+            document.location.reload();
+        }
     }
 
     const data = {
