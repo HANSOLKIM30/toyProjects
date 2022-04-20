@@ -24,7 +24,9 @@ main {
     margin-bottom: 20px;
     font-size: 30px;
     font-weight: 500;
+    text-align: center;
     text-transform: uppercase;
+    width: 648px;
   }
 
   .canvas {
@@ -33,8 +35,8 @@ main {
       align-items: center;
       justify-content: center;
       position: relative;
-      width: 100%;
-      height: 100%;
+      width: 648px;
+      height: 420px;
       border: 2px solid #000;
       background-color: #ccc;
   }

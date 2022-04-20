@@ -13,8 +13,8 @@
             // set attributes of elements drawn on canvas
             // canvas
             this.canvas = document.createElement('canvas');
-            this.canvas.setAttribute('width', 480);
-            this.canvas.setAttribute('height', 340);
+            this.canvas.setAttribute('width', 648);
+            this.canvas.setAttribute('height', 420);
             this.ctx = this.canvas.getContext('2d');
             
             // font 
@@ -70,16 +70,19 @@
         };
 
         init = () => {
-            // initiate brickes array - 2 Dimensional Array
+            // initiate bricks array - 2 Dimensional Array
             for(let colIndex = 0; colIndex < this.brickCol; colIndex++) {
-                // this.bricks[colIndex] = [];
+                /***** technically impossible to create a 2d array in javascript ==> use the format below. *****/
+                this.bricks[colIndex] = [];
                 for(let rowIndex = 0; rowIndex < this.brickRow; rowIndex++) {
-                    this.brickes[colIndex][rowIndex] = { x: 0, y: 0, status: 1 }
+                    this.bricks[colIndex][rowIndex] = { x: 0, y: 0, status: 1 }
                 }
             }
             
             // this.keyEvent
+
             this.draw();
+
         }
 
         // draw elements on canvas
@@ -93,27 +96,40 @@
             this.ctx.drawImage (
               this.image, 
               (this.canvas.width / 2) - (this.image.width / 2),
-              (this.canvas.height / 2) - (this.image.height / 2)
+              (this.canvas.height / 2) - (this.image.height / 2),
             );
 
             // darw the ball
-            this.drawBall();
+            // this.drawBall();
 
             // draw the paddle
-            this.drawPaddle();
+            //this.drawPaddle();
 
             // draw bricks
-            this.drawBricks();
+            //this.drawBricks();
 
             // draw the score
-            this.drawScore();
+            //this.drawScore();
             
             // draw the lives - chances to play
-            this.drawLives();
+            //this.drawLives();
             
             // collision detection between bricks and the ball
-            this.detectCollision();
+            //this.detectCollision();
+
+            // move the ball
+            this.ballX += this.directionX;
+            this.ballY += this.directionY;
+
+            // gameover 될 때까지 재귀적으로 계속 호출되어야 한다.
+            requestAnimationFrame(this.draw);
+    
         }
+
+        // reset = () => {
+        //     // reloads the current URL
+        //     document.location.reload();
+        // }
     }
 
     const data = {
@@ -138,7 +154,7 @@
     
     // 객체를 사용한 구현
     const brickBreak = new BrickBreak('.canvas', data);
-    
-    //brickBreak.init();
+
+    brickBreak.init();
     
 })();
