@@ -125,6 +125,7 @@
         // x, y의 기준은 arc의 center ==> food가 snake의 가운데 위치하게 하기 위해서는 snake 10px의 반만큼 x, y 이동 
         ctx.arc(x + 5, y + 5, 5, 0, 2 * Math.PI);
         ctx.fill();
+        ctx.closePath();
     }
 
     // setSnake: snake를 만듦
