@@ -75,6 +75,10 @@
 
             // set bricks
             this.bricks = [];
+
+            this.isDied = false;
+            this.isGameover = false;
+            this.isGameWin = false;
         };
 
         init = () => {
@@ -215,7 +219,36 @@
         }
 
         detectCollision = () => {
+            let currentBrick = {};
 
+            for(let colIndex = 0; colIndex < this.bricksCol; colIndex++) {
+                for(let rowIndex = 0; rowIndex < this.bricksRow; rowIndex++) {
+                    currentBrick = this.bricks[colIndex][rowIndex];
+
+                    // do not detect broken bricks
+                    if(currentBrick.status !== 1) {
+                        continue;
+                    }
+
+                    // detect collision
+                    if(this.ballX + this.radius > currentBrick.x &&
+                       this.ballX - this.radius  < currentBrick.x + this.brickWidth &&
+                       this.ballY + this.radius > currentBrick.y &&
+                       this.ballY - this.radius < currentBrick.y + this.brickHeight
+                       ) {
+                           this.directionY = -this.directionY;
+                           currentBrick.status = 0;
+                           this.socre++;
+                    }
+
+                    // continue the game untill all bricks are broken
+                    if(this.socre !== this.bricksCol * this.bricksRow) {
+                        continue;
+                    }
+
+                    this.isGameWin = true;
+                }
+            }
         }
 
         // draw elements on canvas
@@ -236,7 +269,22 @@
             this.drawScore();
             
             this.drawLives();
+
+            if(this.isGameover) {
+                this.isGameover = false;
+                setTimeout(() => {
+                    alert('GAME OVER');
+                    this.reset();
+                }, 10);
+            }
             
+            if(this.isGameWin) {
+                this.isGameWin = false;
+                setTimeout(() => {
+                    alert('YOU WIN, CONGRATULATIONS!');
+                    this.reset();
+                }, 10);
+            }
             // collision detection between bricks and the ball
             this.detectCollision();
 
@@ -249,20 +297,20 @@
                 this.directionX = -this.directionX;
             }
 
-            if(
-                this.ballY + this.directionY < 0 ) {
-                this.directionY = -this.directionY;
-            } else if (this.ballY + this.directionY > this.canvas.height - this.paddleHeight) {
-                if(this.ballX > this.paddleX - 10 && this.ballX < this.paddleX + this.paddleWidth + 10) {
-                    this.directionY = - this.directionY;
-                } else {
-                    // end
+            if(this.ballY + this.directionY < this.radius ) {
+                this.directionY = -this.directionY;        
+            } else if ( this.ballY + this.directionY > this.canvas.height - this.paddleHeight && this.ballY + this.directionY < this.canvas.height) {
+                if
+                ( this.ballX > this.paddleX && 
+                  this.ballX < this.paddleX + this.paddleWidth
+                ) {
+                    this.directionY = -this.directionY;
+                } else if(this.ballY + this.directionY > this.canvas.height - this.radius) {
+                    this.isDied = true;
                     this.lives--;
                     if(this.lives === 0) {
-                        alert('');
-                        this.reset();
+                        this.isGameover = true;
                     } else {
-                        // 초기 설정으로 되돌리기
                         this.ballX = this.canvas.width / 2;
                         this.ballY = this.canvas.height - 45;
                         this.directionX = this.speed;
@@ -270,7 +318,7 @@
                         this.paddleX = (this.canvas.width - this.paddleWidth) / 2
                     }
                 }
-            }
+            } 
 
             // move the paddle
             if(this.rightPressed) {
@@ -291,7 +339,15 @@
             this.ballY += this.directionY;
 
             // gameover 될 때까지 재귀적으로 계속 호출되어야 한다.
-            requestAnimationFrame(this.draw);
+            // 죽으면 1초간 멈췄다가 다시 시작
+            if(this.isDied && !this.isGameover) {
+                setTimeout(() => {
+                    requestAnimationFrame(this.draw);
+                }, 1000);
+                this.isDied = false;
+            } else {
+                requestAnimationFrame(this.draw);
+            }
         }
 
         reset = () => {
@@ -315,7 +371,7 @@
         ballStartColor: '#fff',
         ballEndColor: '#000',
         bricksRow: 3,
-        bricksCol: 5,
+        bricksCol: 1,
         brickWidth: 75,
         brickHeight: 20,
         brickPad: 10,
