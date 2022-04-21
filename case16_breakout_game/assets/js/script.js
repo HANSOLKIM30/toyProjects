@@ -112,14 +112,17 @@
             }
         }
 
+        // mouse controll
         moveMouseEvent = (event) => {
             // MouseEvent.clientX: 마우스의 좌표를 받아온다
             // element.offsetLeft: the number of pixels that the upper left corner of the current element
             // https://media.vlpt.us/images/wiostz98kr/post/dec62e7b-1432-4db2-8154-8539fb0b3689/image.png
             const positionX = event.clientX - this.parent.offsetLeft;
 
+            const positionY = event.clientY - this.parent.offsetTop;
+
             // 마우스가 canvas(=parent) 밖으로 넘어가면 paddle의 움직임 X
-            if(0 < positionX && positionX < this.canvas.width) {
+            if(0 < positionX && positionX < this.canvas.width && 0 < positionY && positionY < this.canvas.height) {
                 this.paddleX = positionX - this.paddleWidth / 2;
                 
                 if(this.paddleX + this.paddleWidth > this.canvas.width) {
@@ -237,6 +240,38 @@
             // collision detection between bricks and the ball
             this.detectCollision();
 
+            // Bounce off the walls
+            // ballX(Y) + directX(Y) ==> 앞으로 이동할 곳의 위치
+            if(
+                this.ballX + this.directionX > this.canvas.width - this.radius || 
+                this.ballX + this.directionX < this.radius 
+            ) {
+                this.directionX = -this.directionX;
+            }
+
+            if(
+                this.ballY + this.directionY < 0 ) {
+                this.directionY = -this.directionY;
+            } else if (this.ballY + this.directionY > this.canvas.height - this.paddleHeight) {
+                if(this.ballX > this.paddleX - 10 && this.ballX < this.paddleX + this.paddleWidth + 10) {
+                    this.directionY = - this.directionY;
+                } else {
+                    // end
+                    this.lives--;
+                    if(this.lives === 0) {
+                        alert('');
+                        this.reset();
+                    } else {
+                        // 초기 설정으로 되돌리기
+                        this.ballX = this.canvas.width / 2;
+                        this.ballY = this.canvas.height - 45;
+                        this.directionX = this.speed;
+                        this.directionY = -this.speed;
+                        this.paddleX = (this.canvas.width - this.paddleWidth) / 2
+                    }
+                }
+            }
+
             // move the paddle
             if(this.rightPressed) {
                 this.paddleX += 7;
@@ -291,6 +326,5 @@
     // 객체를 사용한 구현
     const brickBreak = new BrickBreak('.canvas', data);
 
-    brickBreak.init();
-    
+    brickBreak.init();   
 })();
