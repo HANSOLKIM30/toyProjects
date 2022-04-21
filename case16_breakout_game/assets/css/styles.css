@@ -35,8 +35,8 @@ main {
       align-items: center;
       justify-content: center;
       position: relative;
-      width: 648px;
-      height: 420px;
+      width: 480px;
+      height: 320px;
       border: 2px solid #000;
       background-color: #ccc;
   }
