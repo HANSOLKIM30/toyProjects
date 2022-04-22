@@ -36,22 +36,19 @@
             this.background = data.background;
             this.image.setAttribute('src', this.background);
 
+             // paddle
+             this.paddleWidth = data.paddleWidth;
+             this.paddleHeight = data.paddleHeight;
+             this.paddleX = (this.canvas.width - this.paddleWidth) / 2;
+             
             // ball
             this.radius = 10;
             // ballX, ballY: center of the circle
             this.ballX = this.canvas.width / 2;
-            this.ballY = this.canvas.height - 45;
+            this.ballY = this.canvas.height - this.paddleHeight - this.radius - 1;
             this.directionX = data.speed;
             this.directionY = -data.speed;
 
-            // paddle
-            this.paddelImageElement = document.createElement('img');
-            this.paddleImage = data.paddleImage;
-            this.paddelImageElement.setAttribute('src', this.paddleImage);
-            this.paddleWidth = data.paddleWidth;
-            this.paddleHeight = data.paddleHeight;
-            this.paddleX = (this.canvas.width - this.paddleWidth) / 2;
-            
             // keyboard event
             this.leftPressed = false;
             this.rightPressed = false;
@@ -163,14 +160,12 @@
             this.ctx.closePath();
         }
 
-        // draw paddle on the floor of the canvas
         drawPaddle = () => {
-            this.ctx.drawImage(
-                this.paddelImageElement, 
-                this.paddleX, 
-                this.canvas.height - this.paddleHeight, 
-                this.paddleWidth, 
-                this.paddleHeight);
+            this.ctx.beginPath();
+            this.ctx.rect(this.paddleX, this.canvas.height - this.paddleHeight, this.paddleWidth, this.paddleHeight)
+            this.ctx.fillStyle = data.paddleColor
+            this.ctx.fill()
+            this.ctx.closePath()
         }
 
         drawBricks = () => {
@@ -289,35 +284,36 @@
             this.detectCollision();
 
             // Bounce off the walls
-            // ballX(Y) + directX(Y) ==> 앞으로 이동할 곳의 위치
             if(
                 this.ballX + this.directionX > this.canvas.width - this.radius || 
-                this.ballX + this.directionX < this.radius 
+                this.ballX + this.directionX < this.radius
             ) {
                 this.directionX = -this.directionX;
             }
 
+            // 위쪽 벽에 부딫힘. ==> ballY의 좌표
             if(this.ballY + this.directionY < this.radius ) {
-                this.directionY = -this.directionY;        
-            } else if ( this.ballY + this.directionY > this.canvas.height - this.paddleHeight && this.ballY + this.directionY < this.canvas.height) {
+                this.directionY = -this.directionY;
+            } 
+            else if (this.ballY + this.directionY > this.canvas.height - this.radius) {
                 if
                 ( this.ballX > this.paddleX && 
                   this.ballX < this.paddleX + this.paddleWidth
                 ) {
                     this.directionY = -this.directionY;
-                } else if(this.ballY + this.directionY > this.canvas.height - this.radius) {
+                } else {
                     this.isDied = true;
                     this.lives--;
                     if(this.lives === 0) {
                         this.isGameover = true;
                     } else {
                         this.ballX = this.canvas.width / 2;
-                        this.ballY = this.canvas.height - 45;
+                        this.ballY = this.canvas.height - 30;
                         this.directionX = this.speed;
                         this.directionY = -this.speed;
                         this.paddleX = (this.canvas.width - this.paddleWidth) / 2
                     }
-                }
+                }  
             } 
 
             // move the paddle
@@ -359,19 +355,18 @@
     const data = {
         lives: 5,
         speed: 2,
-        paddleHeight: 45,
-        paddleWidth: 55,
+        paddleHeight: 10,
+        paddleWidth: 75,
         background: './assets/images/backgroundImage.jpg',
         ballColor: '#89C7DE',
-        paddleImage: './assets/images/alien.png',
-        paddleColor: '#6D85CF',
+        paddleColor: 'red',
         fontColr: '#F2BB16',
         brickStartColor: '#380762',
         brickEndColor: '#EF3A65',
         ballStartColor: '#fff',
         ballEndColor: '#000',
         bricksRow: 3,
-        bricksCol: 1,
+        bricksCol: 5,
         brickWidth: 75,
         brickHeight: 20,
         brickPad: 10,
