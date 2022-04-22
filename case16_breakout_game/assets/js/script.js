@@ -39,13 +39,14 @@
              // paddle
              this.paddleWidth = data.paddleWidth;
              this.paddleHeight = data.paddleHeight;
+             this.paddleOffset = data.paddleOffset;
              this.paddleX = (this.canvas.width - this.paddleWidth) / 2;
              
             // ball
             this.radius = 10;
             // ballX, ballY: center of the circle
             this.ballX = this.canvas.width / 2;
-            this.ballY = this.canvas.height - this.paddleHeight - this.radius - 1;
+            this.ballY = this.canvas.height - this.paddleOffset - this.paddleHeight - this.radius - 1;
             this.directionX = data.speed;
             this.directionY = -data.speed;
 
@@ -76,6 +77,10 @@
             this.isDied = false;
             this.isGameover = false;
             this.isGameWin = false;
+
+
+
+            this.isInside = false;
         };
 
         init = () => {
@@ -119,11 +124,10 @@
             // element.offsetLeft: the number of pixels that the upper left corner of the current element
             // https://media.vlpt.us/images/wiostz98kr/post/dec62e7b-1432-4db2-8154-8539fb0b3689/image.png
             const positionX = event.clientX - this.parent.offsetLeft;
-
             const positionY = event.clientY - this.parent.offsetTop;
 
             // 마우스가 canvas(=parent) 밖으로 넘어가면 paddle의 움직임 X
-            if(0 < positionX && positionX < this.canvas.width && 0 < positionY && positionY < this.canvas.height) {
+            if(-100 < positionX && positionX < this.canvas.width + 100 && -100 < positionY && positionY < this.canvas.height + 100) {
                 this.paddleX = positionX - this.paddleWidth / 2;
                 
                 if(this.paddleX + this.paddleWidth > this.canvas.width) {
@@ -162,10 +166,10 @@
 
         drawPaddle = () => {
             this.ctx.beginPath();
-            this.ctx.rect(this.paddleX, this.canvas.height - this.paddleHeight, this.paddleWidth, this.paddleHeight)
+            this.ctx.rect(this.paddleX, this.canvas.height - this.paddleOffset - this.paddleHeight, this.paddleWidth, this.paddleHeight)
             this.ctx.fillStyle = data.paddleColor
-            this.ctx.fill()
-            this.ctx.closePath()
+            this.ctx.fill();
+            this.ctx.closePath();
         }
 
         drawBricks = () => {
@@ -283,7 +287,7 @@
             // collision detection between bricks and the ball
             this.detectCollision();
 
-            // Bounce off the walls
+            // Bounce off the side walls
             if(
                 this.ballX + this.directionX > this.canvas.width - this.radius || 
                 this.ballX + this.directionX < this.radius
@@ -291,29 +295,29 @@
                 this.directionX = -this.directionX;
             }
 
-            // 위쪽 벽에 부딫힘. ==> ballY의 좌표
+            // Bounce off the top wall
             if(this.ballY + this.directionY < this.radius ) {
                 this.directionY = -this.directionY;
             } 
-            else if (this.ballY + this.directionY > this.canvas.height - this.radius) {
-                if
-                ( this.ballX > this.paddleX && 
-                  this.ballX < this.paddleX + this.paddleWidth
-                ) {
+
+            // Bounce off the paddle
+            const bouncePoint = this.canvas.height - this.paddleOffset - this.paddleHeight;
+            if(this.ballX + this.directionX > this.paddleX && this.ballX + this.directionX < this.paddleX + this.paddleWidth) {
+                if(this.ballY + this.directionY < bouncePoint + 3 && this.ballY + this.directionY > bouncePoint - 3) {
                     this.directionY = -this.directionY;
+                }
+            } else if (this.ballY + this.directionY > this.canvas.height + this.radius) {
+                this.isDied = true;
+                this.lives--;
+                if(this.lives === 0) {
+                    this.isGameover = true;
                 } else {
-                    this.isDied = true;
-                    this.lives--;
-                    if(this.lives === 0) {
-                        this.isGameover = true;
-                    } else {
-                        this.ballX = this.canvas.width / 2;
-                        this.ballY = this.canvas.height - 30;
-                        this.directionX = this.speed;
-                        this.directionY = -this.speed;
-                        this.paddleX = (this.canvas.width - this.paddleWidth) / 2
-                    }
-                }  
+                    this.ballX = this.canvas.width / 2;
+                    this.ballY = this.canvas.height - this.paddleOffset - this.paddleHeight - this.radius - 1;
+                    this.directionX = this.speed;
+                    this.directionY = -this.speed;
+                    this.paddleX = (this.canvas.width - this.paddleWidth) / 2
+                }              
             } 
 
             // move the paddle
@@ -354,9 +358,10 @@
 
     const data = {
         lives: 5,
-        speed: 2,
+        speed: 3,
         paddleHeight: 10,
         paddleWidth: 75,
+        paddleOffset: 20,
         background: './assets/images/backgroundImage.jpg',
         ballColor: '#89C7DE',
         paddleColor: 'red',
