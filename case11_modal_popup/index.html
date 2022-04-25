@@ -4,12 +4,35 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width", initial-scale="1.0" user-scalable="no" viewport-fit="cover">
-    <title>Document</title>
+    <title>Modal Popup</title>
     <link rel="stylesheet" href="../utils/reset.css">
     <link rel="stylesheet" href="./assets/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
 </head>
 <body>
+    <!-- iOS 등 일부 디바이저에서는 작동하지 않을 수 있음 ==> iOS 모달에 대해서는 더 찾아보기 -->
+    <div class="box"></div>
+    <div class="box"></div>
+    <button class="modal-open-button">모달 띄우기</button>
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="modal">
+        <div class="modal-wrap">
+            <div class="modal-header">모달 타이틀</div>
+            <hr />
+            <div class="modal-body">모달 바디입니다.</div>
+            <div class="model-footer">
+                <button class="modal-button cancel">취소</button>
+                <button class="modal-button confirm">확인</button>
+            </div>
+        </div>
+    </div>
     <script src="./assets/js/script.js"></script>
 </body>
 </html>
