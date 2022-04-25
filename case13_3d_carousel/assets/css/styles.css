@@ -1,0 +1,85 @@
+.wrap {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+h2 {
+    text-align: center;
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 36px;
+}
+
+.container {
+    position: relative;
+    width: 420px;
+    height: 320px;
+    margin: 0 auto;
+    /* persepective: 원근감을 주는 속성. 값이 클수록 원근감이 커짐(3d의 기본 속성) */
+    perspective: 1000px;
+}
+
+.carousel {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    /* transform: 요소에 회전, 기울이기, 크기 조절 등의 효과를 줌. */
+    transform: translateZ(-346px);
+    /* transform-style: 자식에게까지 3D 효과를 줌. */
+    transform-style: preserve-3d;
+    transition: transform 1s;
+}
+
+.item {
+    position: absolute;
+    width: 400px;
+    height: 300px;
+    padding: 10px;
+    transition: transform 1s;
+}
+
+/* 탄젠트 방정식으로 translateZ(z축) 값 알아내기 
+ * z축이 나란해야 함
+ * [r값](https://3dtransforms.desandro.com/img/diagram.png)
+ * [탄젠트 방정식](https://3dtransforms.desandro.com/img/calc.png)
+ * 이 경우 r = 346px
+*/
+.item:nth-child(1) {
+    transform: rotateY(0deg) translateZ(346px);
+}
+
+.item:nth-child(2) {
+    transform: rotateY(60deg) translateZ(346px);
+}
+
+.item:nth-child(3) {
+    transform: rotateY(120deg) translateZ(346px);
+}
+
+.item:nth-child(4) {
+    transform: rotateY(180deg) translateZ(346px);
+}
+
+.item:nth-child(5) {
+    transform: rotateY(240deg) translateZ(346px);
+}
+
+.item:nth-child(6) {
+    transform: rotateY(300deg) translateZ(346px);
+}
+
+.buttons {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.prev-button,
+.next-button {
+    color: #737373;
+    padding: 10px 30px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 24px;
+}
