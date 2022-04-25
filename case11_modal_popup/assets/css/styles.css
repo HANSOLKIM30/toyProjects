@@ -1,3 +1,9 @@
+body.scroll-lock {
+    /* scoll-bar 없애기 ==> 높이 100%를 넘어가는 컨텐츠는 hidden처리 */
+    overflow: hidden;
+    height: 100%;
+}
+
 button {
     border: 0;
     outline: none;
@@ -23,21 +29,32 @@ button {
     background-color: #123;
 }
 
+
+.dimmed-layer.show {
+    display: block;
+}
+
 .modal {
     display: none;
     position: fixed;
-    /* 중앙에 위치 */
+    /* 전체 화면 */
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    background-color: rbg(0 0 0 / 50%);
+    background-color: rgb(0 0 0 / 50%);
     height: 100%;
     overflow: hidden;
+    z-index: 10000;
+}
+
+.modal.show {
+    display: block;
 }
 
 .modal-wrap {
     position: fixed;
+    /* 중앙에 위치 */
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
