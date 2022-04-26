@@ -54,7 +54,7 @@
 
             // label
             // Math.sin, Math.cos: 라디안 값이 인자로 주어짐. 
-            // 라디안: 반지름과 호의 값이 같을 때의 중심각의 크기
+            // 라디안값 = 각도 * Math.PI / 180
             const triangleCenterX = Math.cos(initial * angleValue / 2);
             const triangeCenterY = Math.sin(initial + angleValue / 2); 
         };
