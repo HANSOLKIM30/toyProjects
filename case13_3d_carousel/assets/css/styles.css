@@ -26,6 +26,7 @@ h2 {
     width: 100%;
     position: absolute;
     /* transform: 요소에 회전, 기울이기, 크기 조절 등의 효과를 줌. */
+    /* z축으로 움직여서 뒤로 가는 느낌 주기 */
     transform: translateZ(-346px);
     /* transform-style: 자식에게까지 3D 효과를 줌. */
     transform-style: preserve-3d;
