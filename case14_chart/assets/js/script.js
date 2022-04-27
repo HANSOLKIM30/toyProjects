@@ -40,32 +40,75 @@
             }
         };
 
-        drawCahrt = (donut, centerX, centerY, labelOptions) => {
+        drawLegend = () => {
+
+        };
+
+        drawCanvas = (centerX, centerY, radius, startAngle, endAnlge, color) => {
+            this.ctx.beginPath();
+            this.ctx.fillStyle = color;
+            this.ctx.moveTo(centerX, centerY);
+            // arc(arc's center X, arc's center Y, radius, startAngle, endAngle)
+            this.ctx.arc(centerX, centerY, radius, startAngle, endAnlge);
+            this.ctx.closePath();
+            this.ctx.fill();
+        };
+
+        drawChart = (donut, centerX, centerY, labelOptions) => {
             let initial = 0;
             let index = 0;
             let fontSize = labelOptions.font.split('px')[0] || 14;
 
-            for(const [index, value] of this.datas) {
-                const angleValue = 2 * Math.PI * value / this.total; // 호(arc)
+            for(const [data, value] of this.datas) {
+                // get radius value
+                const angleValue = (2 * Math.PI) * (value / this.total);
+                // draw a pie
                 this.drawCanvas(centerX, centerY, this.radius, initial, initial + angleValue, this.colors[index]);
+                // return to center of the circle
+
+                // draw a label of the pie
+                this.ctx.beginPath();
+                this.ctx.moveTo(centerX, centerY);
+
+                // Math.sin(radian), Math.cos(radian)
+                const triangleRatioX = Math.cos(initial + (angleValue / 2));
+                const triangleRatioY = Math.sin(initial + (angleValue / 2)); 
+                let radiusRatio = 3 / 5;
+
+                if(donut) {
+                    radiusRatio = 4 / 5;
+                }
+
+                const triangleCenterX = this.radius * radiusRatio * triangleRatioX;
+                const triangleCenterY = this.radius * radiusRatio * triangleRatioY;
+
+                const text = Math.round(value / this.total * 100) + '%';
+            
+                let labelX = centerX + triangleCenterX;
+                let labelY = centerY + triangleCenterY;
+                
+                this.ctx.fillStyle = labelOptions ? labelOptions.color : '#fff';
+                this.ctx.font = labelOptions ? labelOptions.font : `${fontSize}px aria;`
+                this.ctx.textAlign = 'center';
+                this.ctx.fillText(text, labelX, labelY);
+                
+                // 이전 파이의 끝 각도 = 다음 파이의 시작 각도
+                initial += angleValue;
+                index++;
             }
 
-            this.ctx.moveTo(centerX, centerY);
-
-            // label
-            // Math.sin, Math.cos: 라디안 값이 인자로 주어짐. 
-            // 라디안값 = 각도 * Math.PI / 180
-            const triangleCenterX = Math.cos(initial * angleValue / 2);
-            const triangeCenterY = Math.sin(initial + angleValue / 2); 
+            // donut일 경우 가운데에 원 그려주기
+            if(donut) {
+                this.drawCanvas(centerX, centerY, this.radius / 3.5, 0, Math.PI *2, 'white');
+            }
         };
-        
     };
 
     const data = {
         guitar: 30,
-        base: 20,
+        base: 10,
         drum: 25,
-        piano: 18
+        piano: 50
     };
 
     const option = {
@@ -87,8 +130,5 @@
     chart.drawLegend();
     // pie 
     // x축: 캔버스 가로길이의 중앙 - 원의 중심을 반지름만큼 이동 - 약간의 여유공간 10
-    chart.drawCahrt(false, width / 2 - 10 - radius, height / 2, labelOptions);
-    // donut
-
-    // 인스턴스 속성과 정적(클래스사이트) / 프로토타입 데이터 속성은 클래스 선언부 바깥에서 정의되어야 함.
+    chart.drawChart(false, width / 2 - 10 - radius, height / 2, labelOptions);
 })();
