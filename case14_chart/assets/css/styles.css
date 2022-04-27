@@ -34,14 +34,15 @@ main {
       align-items: center;
       justify-items: center;
       position: relative;
-      width: 700px;
+      width: 1000px;
       height: 500px;
       border: 2px solid #000;
   }
 
   .legends {
       position: absolute;
-      left: 10vw;
+      left: 20px;
+      top: 163px;
   }
 
   .legends span {

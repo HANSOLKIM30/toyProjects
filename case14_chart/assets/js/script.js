@@ -19,7 +19,7 @@
             
             // 범주
             this.legends = document.createElement('div');
-            this.legends.classList.add('lengends');
+            this.legends.classList.add('legends');
 
             // canvas div에 추가
             this.parent.appendChild(this.canvas);
@@ -41,7 +41,12 @@
         };
 
         drawLegend = () => {
-
+            let index = 0;
+            for(const [instruements, value] of this.datas) {
+                this.label += `<span style='background-color: ${this.colors[index]}'>${instruements}</span>`;
+                index++;
+            }
+            this.legends.innerHTML = this.label;
         };
 
         drawCanvas = (centerX, centerY, radius, startAngle, endAnlge, color) => {
@@ -73,11 +78,7 @@
                 // Math.sin(radian), Math.cos(radian)
                 const triangleRatioX = Math.cos(initial + (angleValue / 2));
                 const triangleRatioY = Math.sin(initial + (angleValue / 2)); 
-                let radiusRatio = 3 / 5;
-
-                if(donut) {
-                    radiusRatio = 4 / 5;
-                }
+                const radiusRatio = 2 / 3;
 
                 const triangleCenterX = this.radius * radiusRatio * triangleRatioX;
                 const triangleCenterY = this.radius * radiusRatio * triangleRatioY;
@@ -99,7 +100,7 @@
 
             // donut일 경우 가운데에 원 그려주기
             if(donut) {
-                this.drawCanvas(centerX, centerY, this.radius / 3.5, 0, Math.PI *2, 'white');
+                this.drawCanvas(centerX, centerY, this.radius / 2.5, 0, Math.PI *2, 'white');
             }
         };
     };
@@ -128,7 +129,7 @@
 
     chart.getTotal();
     chart.drawLegend();
-    // pie 
     // x축: 캔버스 가로길이의 중앙 - 원의 중심을 반지름만큼 이동 - 약간의 여유공간 10
     chart.drawChart(false, width / 2 - 10 - radius, height / 2, labelOptions);
+    chart.drawChart(true, width / 2 + 10 + radius, height / 2, labelOptions);
 })();
