@@ -53,6 +53,10 @@ table {
     font-size: 20px;
 }
 
+.cell-button:active {
+    background-color: #7f8187;
+}
+
 .all-clear, .clear {
     background-color: #434850;
 }
