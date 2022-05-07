@@ -17,22 +17,44 @@
             this.operation = null;
         }
 
-        // 숫자 만들기
+        reset() {
+            this.currentValue = '';
+            this.prevValue = '';
+            this.resetOperation();
+        }
+
+        
+        clear() {
+            if(this.currentValue) {
+                this.currentValue = '';
+                return;
+            }
+
+            if(this.operation) {
+                // 연산자 취소
+                this.resetOperation();
+                // 연산자를 취소했으므로,
+                // prevValue에 할당했던 currentValue 값을 되돌리기
+                this.currentValue = this.prevValue;
+                return;
+            }
+
+            if(this.prevValue) {
+                this.prevValue = '';
+            }
+        }
+
         appendNumber(number) {
             if(number === '.') {
-
-                // currentValue가 없는 상태에서 .을 누른 경우 ==> 0.으로 처리
                 if(this.currentValue === '') {
                     this.currentValue = '0.';
                     return;
                 }
-                // currentValue에 이미 .이 있는 경우 ==> 입력 X
                 if(this.currentValue.includes('.')) {
                     return;
                 }
             }
 
-            // '0' === ''
             if(number === '0' && this.currentValue === '') {
                 return;        
             }
@@ -68,21 +90,6 @@
             element.classList.add('active');
         }
 
-        updateDisplay() {
-            if(this.currentValue) {
-                this.element.value = this.currentValue;
-                return;
-            }
-        }
-
-        resetOperation() {
-            this.operation = null;
-            const elements = Array.from(getAll('.cell-button.operation'));
-            elements.forEach((element => {
-                element.classList.remove('active');
-            }));
-        }
-
         compute() {
 
             let computation;
@@ -91,11 +98,6 @@
             
             if(this.isValueZero(this.currentValue)){ this.currentValue = '0' };
             const current = parseFloat(this.currentValue);
-            
-            // if() {
-
-            // }
-            console.log(this.prevValue, this.currentValue, this.operation);
 
             if(isNaN(prev) || isNaN(current)) {
                 return;
@@ -120,12 +122,27 @@
             this.currentValue = computation.toString();
         }
 
-        clear() {
+        updateDisplay() {
+            if(this.currentValue) {
+                this.element.value = this.currentValue;
+                return;
+            }
 
+            // 연산자 버튼을 눌러서 currentValue -> prevValue가 된 경우
+            if(this.prevValue) {
+                this.element.value = this.prevValue;
+                return;
+            }
+
+            this.element.value = 0;
         }
 
-        reset() {
-
+        resetOperation() {
+            this.operation = null;
+            const elements = Array.from(getAll('.cell-button.operation'));
+            elements.forEach((element => {
+                element.classList.remove('active');
+            }));
         }
     };
 
