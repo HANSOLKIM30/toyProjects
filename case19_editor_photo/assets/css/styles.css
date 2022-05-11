@@ -27,12 +27,13 @@ h1 {
 }
 
 section {
+    box-sizing: content-box;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    width: 100%;
-    height: 100%;
+    width: 1024px;
+    height: 600px;
     padding: 20px;
     border: 2px solid #000;
     background-color: #ccc;
@@ -40,20 +41,20 @@ section {
 
 .editor-wrap,
 .image-wrap {
+    box-sizing: content-box;
     position: relative;
-    width: 700px;
-    height: 411px;
-    margin: 0 20px;
+    width: 470px;
+    height: 500px;
+    margin: 0 20px 22px;
 }
 
 .editor-wrap .canvas-wrap {
     border: 2px solid #aaa;
+    height: 390px;
 }
 
 .editor-wrap .canvas-wrap canvas {
     position: absolute;
-    width: 100%;
-    height: 100%;
 }
 
 .editor-wrap .canvas-wrap img {
@@ -98,7 +99,7 @@ section {
 .button-wrap {
     display: flex;
     position: absolute;
-    right: 15px;
+    right: 35px;
     bottom: 20px;
 }
 
