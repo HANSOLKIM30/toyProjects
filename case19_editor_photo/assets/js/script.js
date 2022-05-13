@@ -23,7 +23,6 @@ https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/File_dra
             
             // BoxSize 
             this.box = get('.image-wrap');
-            console.log(this.box)
             this.boxWidth = this.box.clientWidth;
             this.boxHeight = this.box.clientHeight;
 
@@ -73,9 +72,13 @@ https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/File_dra
         }
 
         clickEvent() {
-
+            this.btnFlip.addEventListener('click', this.flipEvent.bind(this));
+            this.btnSepia.addEventListener('click', this.sepiaEvent.bind(this));
+            this.btnGray.addEventListener('click', this.grayEvent.bind(this));
+            this.btnSave.addEventListener('click', this.download.bind(this));
         }
 
+        // 파일 업로드
         fileEvent() {
             this.fileInput.addEventListener('change', (event) => {
                 // createObjectURL: DOM File 객체를 사용해 참조된 데이터에 대한 참조로 사용할 수 있는 간단한 URL 문자열 - 일종의 blob URL을 생성.
@@ -86,22 +89,75 @@ https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/File_dra
             });
         } 
 
-        sepiaEvent() {
+        flipEvent() {
+            this.targetCtx.translate(this.targetWidth, 0);
+            // scale: 배율이지만, 음수 값을 줌으로서 수직축에서 픽셀을 뒤집을 수 있다.
+            this.targetCtx.scale(-1, 1);
+            this.targetCtx.drawImage(
+                this.img,
+                this.sourceX,
+                this.sourceY,
+                this.sourceWidth,
+                this.sourceHeight,
+                0,
+                0,
+                this.targetWidth,
+                this.targetHeight
+            );
+        }
 
+        sepiaEvent() {
+            this.targetCtx.clearRect(0, 0, this.targetWidth, this.targetHeight);
+            this.targetCtx.filter = 'sepia(1)';
+            this.targetCtx.drawImage(
+                this.img,
+                this.sourceX,
+                this.sourceY,
+                this.sourceWidth,
+                this.sourceHeight,
+                0,
+                0,
+                this.targetWidth,
+                this.targetHeight
+            );
         }
 
         grayEvent() {
-
+            this.targetCtx.clearRect(0, 0, this.targetWidth, this.targetHeight);
+            this.targetCtx.filter = 'grayscale(1)';
+            this.targetCtx.drawImage(
+                this.img,
+                this.sourceX,
+                this.sourceY,
+                this.sourceWidth,
+                this.sourceHeight,
+                0,
+                0,
+                this.targetWidth,
+                this.targetHeight
+            );
         }
 
         download() {
-
+            const url = this.targetCanvas.toDataURL('image/jpeg');
+            console.log(url)
+            const downloader = document.createElement('a');
+            downloader.style.display = 'none';
+            downloader.setAttribute('href', url);
+            downloader.setAttribute('download', 'canvas.png');
+            this.container.appendChild(downloader);
+            downloader.click();
+            setTimeout(() => {
+                this.container.removeChild(downloader);
+            }, 100);
         }
 
+        // Original Image 위에 사각형 그리기
         drawEvent() {
             // Canvas의 넓이와 높이, 위치를 가져오는 메서드
             const canvasX = this.canvas.getBoundingClientRect().left;
             const canvasY = this.canvas.getBoundingClientRect().top;
+            
             // s ==> start point, e ==> end point
             let  sX, sY, eX, eY;
             let drawStart = false;
@@ -141,6 +197,7 @@ https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/File_dra
             });
         }
 
+        // targetCanvas에 자른 이미지 그리기
         drawOutput(x, y, width, height) {
             this.targetImage.innerHTML = '';
 
